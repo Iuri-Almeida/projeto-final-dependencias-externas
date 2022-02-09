@@ -5,7 +5,6 @@ import br.com.ialmeida.entities.Rebel;
 import br.com.ialmeida.enums.Race;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -15,9 +14,9 @@ public class Program {
         Scanner sc = new Scanner(System.in);
         RegisterController controller = new RegisterController();
 
-        UI.printTitle();
+        UI.printTitle(sc);
 
-        while (controller.rebelsLength() < 4) {
+        while (controller.rebelsLength() < ProgramConstants.TOTAL_REBELS) {
             try {
                 UI.clearScreen();
                 UI.printRebelTitle(controller.rebelsLength());
@@ -37,21 +36,21 @@ public class Program {
                 }
 
             } catch (InputMismatchException e) {
-                System.out.println(e.getMessage() + "\n");
-                System.out.println("Click ENTER to continue.");
+                System.out.println(ProgramConstants.ERROR_COLOR + e.getMessage() + "\n");
+                System.out.println("Click ENTER to continue." + ProgramConstants.RESET_COLOR);
                 sc.nextLine();
             }
 
         }
 
-        UI.printEndOfRegistration();
+        UI.clearScreen();
         UI.orderTheRebels(sc, controller.getRebels());
 
         try {
             controller.generateTxtFile();
-            System.out.println("\nFinished!");
+            UI.generatedFileSuccessfully();
         } catch (IOException e) {
-            System.out.println("Error writing the records.");
+            UI.generatedFileWrongly();
             e.printStackTrace();
         }
 
