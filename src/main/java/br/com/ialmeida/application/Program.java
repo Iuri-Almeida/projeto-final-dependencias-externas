@@ -5,6 +5,7 @@ import br.com.ialmeida.entities.Rebel;
 import br.com.ialmeida.enums.Race;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Program {
@@ -13,39 +14,35 @@ public class Program {
         Scanner sc = new Scanner(System.in);
         RegisterController controller = new RegisterController();
 
-        System.out.println("Rebels Registration!\n");
+        UI.printTitle();
 
         while (controller.rebelsLength() < 10) {
-            clearScreen();
+            try {
+                UI.clearScreen();
 
-            System.out.printf("Rebel #%d\n", controller.rebelsLength() + 1);
+                System.out.printf("Rebel #%d\n", controller.rebelsLength() + 1);
 
-            System.out.print("Name: ");
-            String name = sc.nextLine();
+                String name = UI.readString(sc, "Name: ");
+                int age = UI.readInt(sc, "Age: ", true);
+                int raceOrdinal = UI.readInt(sc, "Choose race:\n", false);
 
-            System.out.print("Age: ");
-            int age = sc.nextInt();
+                Rebel rebel = new Rebel(name, age, Race.values()[raceOrdinal]);
 
-            System.out.println("Choose race:\n");
-            for (Race race : Race.values()) {
-                System.out.printf("%d - %s\n", race.ordinal(), race.name());
-            }
+                System.out.print("\nWanna join us? [y/n] ");
+                char answer = sc.next().toLowerCase().charAt(0);
+                sc.nextLine();
 
-            System.out.print("\nChoose: ");
-            int raceOrdinal = sc.nextInt();
-
-            Rebel rebel = new Rebel(name, age, Race.values()[raceOrdinal]);
-
-            System.out.print("\nWanna join us? [y/n] ");
-            char answer = sc.next().toLowerCase().charAt(0);
-            sc.nextLine();
-
-            if (answer == 'y') {
-                if (controller.requestAccess(rebel)) {
-                    controller.registerRebel(rebel);
-                } else {
-                    System.out.println("\nACCESS DENIED!\n");
+                if (answer == 'y') {
+                    if (controller.requestAccess(rebel)) {
+                        controller.registerRebel(rebel);
+                    } else {
+                        System.out.println("\nACCESS DENIED!\n");
+                    }
                 }
+            } catch (InputMismatchException e) {
+                System.out.println(e.getMessage() + "\n");
+                System.out.println("Click ENTER to continue.");
+                sc.nextLine();
             }
 
         }
@@ -61,11 +58,5 @@ public class Program {
         }
 
         sc.close();
-    }
-
-    // https://stackoverflow.com/questions/2979383/java-clear-the-console
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
     }
 }
