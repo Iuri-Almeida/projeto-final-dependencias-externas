@@ -48,6 +48,8 @@ public class Program {
 
         try {
             controller.generateTxtFile();
+
+            UI.clearScreen();
             UI.generatedFileSuccessfully();
         } catch (IOException e) {
             UI.generatedFileWrongly();

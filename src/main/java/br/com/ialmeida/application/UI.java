@@ -17,8 +17,11 @@ public class UI {
     }
 
     public static void printTitle(Scanner sc) {
-        System.out.println("Rebels Registration!\n");
-        System.out.println("Press ENTER to start.");
+        clearScreen();
+        System.out.println(ProgramConstants.TITLE_COLOR);
+        StarWarsDrawing.title();
+        System.out.println("\n                             Press ENTER to start.                          ");
+        System.out.println(ProgramConstants.RESET_COLOR);
         sc.nextLine();
     }
 
@@ -28,7 +31,13 @@ public class UI {
 
     public static String readName(Scanner sc, String txt) {
         System.out.print(ProgramConstants.INPUT_COLOR + txt + ProgramConstants.RESET_COLOR);
-        return sc.nextLine().trim();
+        String name = sc.nextLine().trim();
+
+        if (name.equals("")) {
+            throw new InputMismatchException("Name cannot be empty.");
+        }
+
+        return name;
     }
 
     public static int readAge(Scanner sc, String txt) {
@@ -37,7 +46,7 @@ public class UI {
             String n = sc.nextLine().trim();
             return Integer.parseInt(n);
         } catch (RuntimeException e) {
-            throw new InputMismatchException("Error reading integer inputs.");
+            throw new InputMismatchException("Error reading rebel's age.");
         }
     }
 
@@ -53,9 +62,9 @@ public class UI {
             int raceOrdinal = Integer.parseInt(sc.nextLine().trim());
             return Race.values()[raceOrdinal];
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new InputMismatchException("Values must be 0, 1 or 2.");
+            throw new InputMismatchException("Choose the values 0, 1 or 2.");
         } catch (RuntimeException e) {
-            throw new InputMismatchException("Error reading integer inputs.");
+            throw new InputMismatchException("Error reading rebel's race.");
         }
     }
 
@@ -89,6 +98,11 @@ public class UI {
         }
 
         printOrderedRebels(rebels);
+
+        System.out.println(ProgramConstants.FINISH_COLOR);
+        System.out.println("\n                             Press ENTER to continue.                          ");
+        System.out.println(ProgramConstants.RESET_COLOR);
+        sc.nextLine();
     }
 
     private static int getUserChoice(Scanner sc) {
@@ -132,7 +146,10 @@ public class UI {
     }
 
     public static void generatedFileSuccessfully() {
-        System.out.println(ProgramConstants.FINISH_COLOR + "\nFinished!" + ProgramConstants.RESET_COLOR);
+        System.out.println(ProgramConstants.FINISH_COLOR);
+        StarWarsDrawing.seeYa();
+        System.out.println("\n                                   Finished!                               ");
+        System.out.println(ProgramConstants.RESET_COLOR);
     }
 
     public static void generatedFileWrongly() {
