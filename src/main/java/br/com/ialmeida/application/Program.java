@@ -21,13 +21,19 @@ public class Program {
                 UI.clearScreen();
                 UI.printRebelTitle(controller.rebelsLength());
 
-                String name = UI.readString(sc, "Name: ");
-                int age = UI.readInt(sc, "Age: ", true);
-                int raceOrdinal = UI.readInt(sc, "Choose race:\n", false);
+                String name = UI.readName(sc, "Name: ");
+                int age = UI.readAge(sc, "Age: ");
+                Race race = UI.readRace(sc, "Choose race:\n");
 
-                Rebel rebel = new Rebel(name, age, Race.values()[raceOrdinal]);
+                Rebel rebel = new Rebel(name, age, race);
 
-                UI.printQuestion(sc, controller, rebel);
+                if (UI.wannaJoinUs(sc)) {
+                    if (controller.requestAccess(rebel)) {
+                        controller.registerRebel(rebel);
+                    } else {
+                        System.out.println("\nACCESS DENIED!\n");
+                    }
+                }
 
             } catch (InputMismatchException e) {
                 System.out.println(e.getMessage() + "\n");
