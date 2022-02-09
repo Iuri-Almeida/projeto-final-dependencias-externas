@@ -5,6 +5,7 @@ import br.com.ialmeida.entities.Rebel;
 import br.com.ialmeida.enums.Race;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -16,7 +17,7 @@ public class Program {
 
         UI.printTitle();
 
-        while (controller.rebelsLength() < 10) {
+        while (controller.rebelsLength() < 4) {
             try {
                 UI.clearScreen();
                 UI.printRebelTitle(controller.rebelsLength());
@@ -44,6 +45,7 @@ public class Program {
         }
 
         UI.printEndOfRegistration();
+        UI.orderTheRebels(sc, controller.getRebels());
 
         try {
             controller.generateTxtFile();

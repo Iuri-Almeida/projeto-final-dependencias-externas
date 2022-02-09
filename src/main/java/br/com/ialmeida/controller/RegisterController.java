@@ -8,14 +8,18 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 @NoArgsConstructor
 public class RegisterController {
-    private final ArrayList<Rebel> rebels = new ArrayList<>();
+    private final HashMap<Integer, Rebel> rebels = new HashMap<>();
+
+    public HashMap<Integer, Rebel> getRebels() {
+        return rebels;
+    }
 
     public void registerRebel(Rebel rebel) {
-        rebels.add(rebel);
+        rebels.put(rebels.size(), rebel);
     }
 
     public int rebelsLength() {
@@ -25,7 +29,8 @@ public class RegisterController {
     public void generateTxtFile() throws IOException {
         @Cleanup PrintWriter writer = new PrintWriter("rebels.txt", StandardCharsets.UTF_8);
 
-        for (Rebel rebel : rebels) {
+        for (int i = 0; i < rebels.size(); i++) {
+            Rebel rebel = rebels.get(i);
             writer.println(rebel.getName() + ";" + rebel.getAge() + ";" + rebel.getRace());
         }
     }

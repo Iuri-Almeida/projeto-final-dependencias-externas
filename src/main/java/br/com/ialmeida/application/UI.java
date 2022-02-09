@@ -1,7 +1,11 @@
 package br.com.ialmeida.application;
 
+import br.com.ialmeida.entities.Rebel;
 import br.com.ialmeida.enums.Race;
+import br.com.ialmeida.sort.BubbleSort;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -66,6 +70,60 @@ public class UI {
         } while (answer != 'y' && answer != 'n');
 
         return answer == 'y';
+    }
+
+    public static void orderTheRebels(Scanner sc, HashMap<Integer, Rebel> rebels) {
+        int userChoice = getUserChoice(sc);
+
+        switch (userChoice) {
+            case 0:
+                BubbleSort.sortByName(rebels);
+                break;
+            case 1:
+                BubbleSort.sortByAge(rebels);
+                break;
+            default:
+                BubbleSort.sortByRace(rebels);
+                break;
+        }
+
+        printOrderedRebels(rebels);
+    }
+
+    private static int getUserChoice(Scanner sc) {
+        System.out.println("From which attribute the rebels should be listed?\n");
+
+        System.out.println("0 - Name");
+        System.out.println("1 - Age");
+        System.out.println("2 - Race");
+
+        System.out.println();
+
+        int answer;
+        String msg = "";
+
+        do {
+            System.out.print(msg + "Choose: ");
+            char c = sc.nextLine().trim().charAt(0);
+
+            try {
+                answer = Integer.parseInt(String.valueOf(c));
+            } catch (RuntimeException e) {
+                answer = 3;
+                msg = "\nSorry, we will only accept 0, 1 or 2. ";
+            }
+        } while (answer < 0 || answer > 2);
+
+        return answer;
+    }
+
+    private static void printOrderedRebels(HashMap<Integer, Rebel> rebels) {
+        System.out.println("\nOrdered Rebels\n");
+
+        for (int i = 0; i < rebels.size(); i++) {
+            Rebel rebel = rebels.get(i);
+            System.out.println(rebel.getName() + ";" + rebel.getAge() + ";" + rebel.getRace());
+        }
     }
 
     public static void printEndOfRegistration() {
