@@ -19,8 +19,7 @@ public class Program {
         while (controller.rebelsLength() < 10) {
             try {
                 UI.clearScreen();
-
-                System.out.printf("Rebel #%d\n", controller.rebelsLength() + 1);
+                UI.printRebelTitle(controller.rebelsLength());
 
                 String name = UI.readString(sc, "Name: ");
                 int age = UI.readInt(sc, "Age: ", true);
@@ -28,17 +27,8 @@ public class Program {
 
                 Rebel rebel = new Rebel(name, age, Race.values()[raceOrdinal]);
 
-                System.out.print("\nWanna join us? [y/n] ");
-                char answer = sc.next().toLowerCase().charAt(0);
-                sc.nextLine();
+                UI.printQuestion(sc, controller, rebel);
 
-                if (answer == 'y') {
-                    if (controller.requestAccess(rebel)) {
-                        controller.registerRebel(rebel);
-                    } else {
-                        System.out.println("\nACCESS DENIED!\n");
-                    }
-                }
             } catch (InputMismatchException e) {
                 System.out.println(e.getMessage() + "\n");
                 System.out.println("Click ENTER to continue.");
@@ -47,7 +37,7 @@ public class Program {
 
         }
 
-        System.out.println("\nFinishing the registration and writing in the file `rebels.txt`!");
+        UI.printEndOfRegistration();
 
         try {
             controller.generateTxtFile();
